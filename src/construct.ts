@@ -1,5 +1,6 @@
 import { SecretValue, Stack } from 'aws-cdk-lib';
 import { IStage } from 'aws-cdk-lib/aws-apigateway';
+import { CfnService } from 'aws-cdk-lib/aws-apprunner';
 import { CfnGraphQLApi } from 'aws-cdk-lib/aws-appsync';
 import { IApplicationLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -177,6 +178,11 @@ export class OriginVerify extends Construct implements IVerification {
     return 'attrGraphQlUrl' in origin;
   }
 
+  /** Type guard for AWS App Runner service. */
+  private isCfnService(origin: Origin): origin is CfnService {
+    return origin instanceof CfnService;
+  }
+
   /** Resolves origin (either IStage or IApplicationLoadBalancer) ARN. */
   private resolveOriginArn(origin: Origin): string {
     if (this.isAlb(origin)) {
@@ -187,6 +193,9 @@ export class OriginVerify extends Construct implements IVerification {
     }
     if (this.isCfnGraphQLApi(origin)) {
       return origin.attrArn;
+    }
+    if (this.isCfnService(origin)) {
+      return origin.attrServiceArn;
     }
     addError(
       this,

@@ -1,5 +1,6 @@
 import { IResolvable, SecretValue } from 'aws-cdk-lib';
 import { IStage } from 'aws-cdk-lib/aws-apigateway';
+import { CfnService } from 'aws-cdk-lib/aws-apprunner';
 import { CfnGraphQLApi } from 'aws-cdk-lib/aws-appsync';
 import { IApplicationLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { CfnWebACL } from 'aws-cdk-lib/aws-wafv2';
@@ -9,8 +10,10 @@ import { CfnWebACL } from 'aws-cdk-lib/aws-wafv2';
  * Accepted types:
  * - `IStage` (from `aws-cdk-lib/aws-apigateway`)
  * - `IApplicationLoadBalancer` (from `aws-cdk-lib/aws-elasticloadbalancingv2`)
+ * - `CfnGraphQLApi` (from `aws-cdk-lib/aws-appsync`)
+ * - `CfnService` (from `aws-cdk-lib/aws-apprunner`)
  */
-export type Origin = IStage | IApplicationLoadBalancer | CfnGraphQLApi;
+export type Origin = IStage | IApplicationLoadBalancer | CfnGraphQLApi | CfnService;
 
 /**
  * Properties for `OriginVerify` constructor.
