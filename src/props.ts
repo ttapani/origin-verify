@@ -1,3 +1,4 @@
+import { Service } from '@aws-cdk/aws-apprunner-alpha';
 import { IResolvable, SecretValue } from 'aws-cdk-lib';
 import { IStage } from 'aws-cdk-lib/aws-apigateway';
 import { CfnService } from 'aws-cdk-lib/aws-apprunner';
@@ -13,7 +14,7 @@ import { CfnWebACL } from 'aws-cdk-lib/aws-wafv2';
  * - `CfnGraphQLApi` (from `aws-cdk-lib/aws-appsync`)
  * - `CfnService` (from `aws-cdk-lib/aws-apprunner`)
  */
-export type Origin = IStage | IApplicationLoadBalancer | CfnGraphQLApi | CfnService;
+export type Origin = IStage | IApplicationLoadBalancer | CfnGraphQLApi | CfnService | Service;
 
 /**
  * Properties for `OriginVerify` constructor.

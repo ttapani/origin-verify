@@ -1,3 +1,4 @@
+import { Service, EcrPublicSource } from '@aws-cdk/aws-apprunner-alpha';
 import { App, SecretValue, Stack } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { RestApi } from 'aws-cdk-lib/aws-apigateway';
@@ -79,12 +80,37 @@ test('Allow AppSync', () => {
   });
 });
 
-test('Allow App Runner', () => {
+test('Allow App Runner CfnService', () => {
   const app = new App();
   const stack = new Stack(app);
 
   const service = new CfnService(stack, 'Service', {
     sourceConfiguration: {},
+  });
+
+  const verification = new OriginVerify(stack, 'OriginVerify', {
+    origin: service,
+  });
+
+  expect(verification.headerName).toBe('x-origin-verify');
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::WAFv2::WebACL', {
+    DefaultAction: {
+      Block: {},
+    },
+  });
+});
+
+test('Allow App Runner Service', () => {
+  const app = new App();
+  const stack = new Stack(app);
+
+  const service = new Service(stack, 'Service', {
+    source: new EcrPublicSource({
+      imageIdentifier: 'test',
+    }),
   });
 
   const verification = new OriginVerify(stack, 'OriginVerify', {

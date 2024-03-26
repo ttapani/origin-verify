@@ -1,3 +1,4 @@
+import { Service } from '@aws-cdk/aws-apprunner-alpha';
 import { SecretValue, Stack } from 'aws-cdk-lib';
 import { IStage } from 'aws-cdk-lib/aws-apigateway';
 import { CfnService } from 'aws-cdk-lib/aws-apprunner';
@@ -178,9 +179,14 @@ export class OriginVerify extends Construct implements IVerification {
     return 'attrGraphQlUrl' in origin;
   }
 
-  /** Type guard for AWS App Runner service. */
+  /** Type guard for AWS App Runner CfnService. */
   private isCfnService(origin: Origin): origin is CfnService {
     return origin instanceof CfnService;
+  }
+
+  /** Type guard for AWS App Runner service. */
+  private isService(origin: Origin): origin is Service {
+    return origin instanceof Service;
   }
 
   /** Resolves origin (either IStage or IApplicationLoadBalancer) ARN. */
@@ -196,6 +202,9 @@ export class OriginVerify extends Construct implements IVerification {
     }
     if (this.isCfnService(origin)) {
       return origin.attrServiceArn;
+    }
+    if (this.isService(origin)) {
+      return origin.serviceArn;
     }
     addError(
       this,

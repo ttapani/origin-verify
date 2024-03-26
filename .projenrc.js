@@ -38,7 +38,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   minNodeVersion: nodejsVersion,
   cdkVersion: '2.24.1',
   constructsVersion: '10.0.0',
-  peerDeps: ['constructs', 'aws-cdk-lib'],
+  peerDeps: ['constructs', 'aws-cdk-lib', '@aws-cdk/aws-apprunner-alpha'],
   devDeps: [
     'aws-cdk-lib',
     'constructs',
